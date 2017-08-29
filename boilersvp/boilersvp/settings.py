@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import environ
-
+from huey import RedisHuey
 
 env = environ.Env()
 
@@ -42,14 +42,16 @@ DJANGO_APPS = (
     'django.contrib.staticfiles',
 )
 
-THIRD_PARTY_APPS = ()
+THIRD_PARTY_APPS = (
+    'huey.contrib.djhuey',
+)
 
-FIRST_PARTY_APPS = (
+LOCAL_APPS = (
     'subscriptions',
 )
 
 
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + FIRST_PARTY_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 
 MIDDLEWARE = [
@@ -63,6 +65,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'boilersvp.urls'
+
+SITE_NAME = 'boilersvp'
 
 TEMPLATES = [
     {
@@ -128,3 +132,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Work queue
+# http://huey.readthedocs.io/en/latest/django.html
+
+HUEY = RedisHuey(SITE_NAME)
