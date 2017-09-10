@@ -1,42 +1,42 @@
 import logging
 
+import requests
+from dateutil.parser import parse
 from huey import crontab
-from huey.contrib.djhuey import periodic_task, db_periodic_task
+from huey.contrib.djhuey import periodic_task, db_periodic_task, db_task
+
+from .models import City, Event
+
+logger = logging.getLogger(__name__)
 
 
 @periodic_task(crontab(minute='*/5'))
 def say_hello():
-    print('Hello!')
+    logger.info('Hello!')
 
 
-@db_periodic_task(crontab(minute='*/5'))
-def scrape_all_cities():
-    from .models import City
-    import requests
+@db_periodic_task(crontab(hour='*'))
+def fetch_all_events():
+    next_url = 'https://archive.boilerroom.tv/api/shows/'
+    while next_url:
+        logger.info('Fetching <%s>…', next_url)
+        resp = requests.get(next_url).json()
+        next_url = resp['next']
 
-    resp = requests.get('https://archive.boilerroom.tv/api/cities/').json()
-    cities = resp['results']
+        for event_json in resp['results']:
+            if event_json['city']:
+                city, created = City.objects.update_or_create(
+                    url=event_json['city']['url'],
+                    name=event_json['city']['name'],
+                )
+                logger.info('Created %r.' if created else 'Updated %r.', city)
+            else:
+                city = None
 
-    while resp['next']:
-        resp = requests.get(resp['next']).json()
-        cities += resp['results']
-
-    for city in cities:
-        instance, created = City.objects.update_or_create(name=city['name'])
-        logging.info('Created %r.' if created else 'Updated %r.', instance)
-        print('Hello %r' % instance)
-
-
-def scrape_all_events():
-    from .models import Event
-    import requests
-
-    resp = requests.get('https://arhive.boilerroom.tv/api/shows/').json()
-    events = resp['results']
-    while resp['next']:
-        resp = requests.get(resp['next']).json()
-        events += resp['results']
-
-    for event in events:
-        instance, created = Event.objects.update_or_create(name=event['name'])
-        logging.info('Created %r.' if created else 'Updated %r.', instance)
+            event, created = Event.objects.update_or_create(
+                url=event_json['url'],
+                name=event_json['title'],
+                city=city ,
+                start=parse(event_json['start']),
+            )
+            logger.info('Created %r.' if created else 'Updated %r.', event)

@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
+import logging
 import os
+import sys
+
 import environ
 
 env = environ.Env()
@@ -42,6 +45,7 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
+    'django_extensions',
     'huey.contrib.djhuey',
 )
 
@@ -96,18 +100,38 @@ DATABASES = {
 # Huey task queue
 # http://huey.readthedocs.io/en/latest/django.html
 HUEY = {
-    # 'name': DATABASES['default']['name'],  # Use db name for huey.
-    # 'result_store': True,   # Store return values of tasks.
-    # 'events': True,         # Consumer emits events allowing real-time monitoring.
-    # 'store_none': False,    # If a task returns None, do not save to results.
-    # 'store_errors': True,   # Store error info if task throws exception.
-    # 'blocking': False,      # Poll the queue rather than do blocking pop.
     'always_eager': False,
     'connection': {
-        'url': str(env.url('REDIS_URL', default='redis://localhost:6379/boilersvp')),  # Allow Redis config via a DSN.
+        'url': str(env.url('REDIS_URL', default='redis://localhost:6379')),
     },
 }
 
+# LOGGING CONFIGURATION
+default_app_logger = {
+    'handlers': ['console'],
+    'level': logging.DEBUG if DEBUG else logging.INFO,
+    'propagate': False
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '[%(levelname)s] %(message)s'
+        },
+    },
+    'handlers': {
+        # default log handler prints to console at debug level
+        'console': {
+            'level': logging.DEBUG if DEBUG else logging.INFO,
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout,
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {app: default_app_logger for app in LOCAL_APPS},
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
