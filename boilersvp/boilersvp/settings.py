@@ -140,10 +140,10 @@ if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = env.str('MAILGUN_SMTP_SERVER', env.str('SMTP_HOST'))
-    EMAIL_PORT = env.str('MAILGUN_SMTP_PASSWORD', env.str('SMTP_PORT'))
-    EMAIL_HOST_USER = env.str('MAILGUN_SMTP_LOGIN', env.str('SMTP_USER'))
-    EMAIL_HOST_PASSWORD = env.str('MAILGUN_SMTP_PASSWORD', env.str('SMTP_PASSWORD'))
+    EMAIL_HOST = env.str('MAILGUN_SMTP_SERVER')
+    EMAIL_PORT = env.str('MAILGUN_SMTP_PASSWORD')
+    EMAIL_HOST_USER = env.str('MAILGUN_SMTP_LOGIN')
+    EMAIL_HOST_PASSWORD = env.str('MAILGUN_SMTP_PASSWORD')
     EMAIL_USE_TLS = True
 
 # Password validation
