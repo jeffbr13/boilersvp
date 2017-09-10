@@ -187,8 +187,8 @@ root = environ.Path(__file__) - 3  # three folder back (/a/b/c/ - 3 = /)
 SITE_ROOT = root()
 public_root = root.path('public/')
 MEDIA_ROOT = public_root('media')
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 STATIC_ROOT = public_root('static')
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
