@@ -181,5 +181,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-
-STATIC_URL = '/static/'
+root = environ.Path(__file__) - 3  # three folder back (/a/b/c/ - 3 = /)
+SITE_ROOT = root()
+public_root = root.path('public/')
+MEDIA_ROOT = public_root('media')
+MEDIA_URL = 'media/'
+STATIC_ROOT = public_root('static')
+STATIC_URL = 'static/'
