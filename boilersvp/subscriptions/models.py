@@ -11,6 +11,7 @@ class City(models.Model):
 
 class Event(models.Model):
     url = models.URLField(unique=True)
+    web_url = models.URLField(unique=True)
     name = models.CharField(max_length=300)
     city = models.ForeignKey(City, null=True, blank=True)
     start = models.DateTimeField()
