@@ -102,7 +102,7 @@ DATABASES = {
 HUEY = {
     'always_eager': False,
     'connection': {
-        'url': str(env.url('REDIS_URL', default='redis://localhost:6379')),
+        'url': str(env.cache_url('REDIS_URL')),
     },
 }
 
@@ -132,6 +132,19 @@ LOGGING = {
     },
     'loggers': {app: default_app_logger for app in LOCAL_APPS},
 }
+
+# Email
+# https://docs.djangoproject.com/en/1.11/topics/email#django.core.mail.backends.smtp.EmailBackend
+SERVER_EMAIL = env.str('SERVER_EMAIL', 'boilersvp@benjeffrey.net')
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = env.str('MAILGUN_SMTP_SERVER', env.str('SMTP_HOST'))
+    EMAIL_PORT = env.str('MAILGUN_SMTP_PASSWORD', env.str('SMTP_PORT'))
+    EMAIL_HOST_USER = env.str('MAILGUN_SMTP_LOGIN', env.str('SMTP_USER'))
+    EMAIL_HOST_PASSWORD = env.str('MAILGUN_SMTP_PASSWORD', env.str('SMTP_PASSWORD'))
+    EMAIL_USE_TLS = True
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
