@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import environ
-from huey import RedisHuey
 
 env = environ.Env()
 
@@ -94,6 +93,21 @@ DATABASES = {
     'default': env.db()
 }
 
+# Huey task queue
+# http://huey.readthedocs.io/en/latest/django.html
+HUEY = {
+    # 'name': DATABASES['default']['name'],  # Use db name for huey.
+    # 'result_store': True,   # Store return values of tasks.
+    # 'events': True,         # Consumer emits events allowing real-time monitoring.
+    # 'store_none': False,    # If a task returns None, do not save to results.
+    # 'store_errors': True,   # Store error info if task throws exception.
+    # 'blocking': False,      # Poll the queue rather than do blocking pop.
+    'always_eager': False,
+    'connection': {
+        'url': str(env.url('REDIS_URL', default='redis://localhost:6379/boilersvp')),  # Allow Redis config via a DSN.
+    },
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -132,9 +146,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-
-
-# Work queue
-# http://huey.readthedocs.io/en/latest/django.html
-
-HUEY = RedisHuey(SITE_NAME)
