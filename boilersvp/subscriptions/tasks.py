@@ -4,6 +4,7 @@ import requests
 from dateutil.parser import parse
 from django.conf import settings
 from django.core.mail import send_mass_mail
+from django.utils import timezone
 from huey import crontab
 from huey.contrib.djhuey import periodic_task, db_periodic_task, db_task
 
@@ -52,7 +53,7 @@ def fetch_all_events():
                     start=parse(event_json['start']),
                 )
                 logger.info('Created %r.' if created else 'Updated %r.', event)
-                if created:
+                if created and event.start > timezone.now():
                     notify_subscribers(event.id)
             except:
                 logger.exception('Could not create event from %s.', event_json)
