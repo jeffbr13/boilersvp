@@ -16,9 +16,11 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from subscriptions.views import index
+from subscriptions.views import index, AllEventsCalendarFeed
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', index)
+    url(r'^$', index),
+    url(r'^calendar/all$', AllEventsCalendarFeed()),
 ]
