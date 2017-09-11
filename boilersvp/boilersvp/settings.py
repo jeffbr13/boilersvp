@@ -135,7 +135,7 @@ LOGGING = {
 }
 
 DEFAULT_FROM_EMAIL = env.email('SERVER_EMAIL')
-SERVER_EMAIL = env.mail('SERVER_EMAIL')
+SERVER_EMAIL = env.email('SERVER_EMAIL')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env.str('EMAIL_HOST')
 EMAIL_PORT = env.int('EMAIL_PORT')
