@@ -134,8 +134,8 @@ LOGGING = {
     'loggers': {app: default_app_logger for app in LOCAL_APPS},
 }
 
-DEFAULT_FROM_EMAIL = env.email('SERVER_EMAIL')
-SERVER_EMAIL = env.email('SERVER_EMAIL')
+DEFAULT_FROM_EMAIL = env.str('SERVER_EMAIL')
+SERVER_EMAIL = env.str('SERVER_EMAIL')
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env.str('EMAIL_HOST')
 EMAIL_PORT = env.int('EMAIL_PORT')
