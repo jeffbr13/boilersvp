@@ -15,6 +15,8 @@ def index(request: HttpRequest):
         if form.is_valid():
             form.save()
             messages.success(request, "You've subscribed!")
+        else:
+            messages.error(request, form.errors)
 
     else:
         form = SubscriberForm()
