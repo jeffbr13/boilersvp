@@ -21,7 +21,7 @@ class Event(models.Model):
 
 
 class Subscriber(models.Model):
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     cities = models.ManyToManyField(City)
 
     def __str__(self):
