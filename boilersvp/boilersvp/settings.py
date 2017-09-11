@@ -134,18 +134,14 @@ LOGGING = {
     'loggers': {app: default_app_logger for app in LOCAL_APPS},
 }
 
-# Email
-# https://docs.djangoproject.com/en/1.11/topics/email#django.core.mail.backends.smtp.EmailBackend
-SERVER_EMAIL = env.str('SERVER_EMAIL', 'boilersvp@benjeffrey.net')
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = env.str('EMAIL_HOST')
-    EMAIL_PORT = env.str('EMAIL_PORT')
-    EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
-    EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = env.email('SERVER_EMAIL')
+SERVER_EMAIL = env.mail('SERVER_EMAIL')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env.str('EMAIL_HOST')
+EMAIL_PORT = env.int('EMAIL_PORT')
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+EMAIL_USE_SSL = True
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

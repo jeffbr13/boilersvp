@@ -67,7 +67,7 @@ def notify_subscribers(event_id):
         emails.append((
             'Upcoming Boiler Room in %s: %s' % (event.city, event.name),
             'RSVP to %s at <%s>.' % (event.name, event.web_url),
-            settings.SERVER_EMAIL,
+            settings.DEFAULT_FROM_MAIL,
             (subscriber.email,),
         ))
     send_mass_mail(emails)
