@@ -103,7 +103,7 @@ DATABASES = {
 HUEY = {
     'always_eager': False,
     'connection': {
-        'url': str(env.cache_url('REDIS_URL')),
+        'url': env.str('REDIS_URL', 'redis://localhost:6379/?db=1'),
     },
 }
 
