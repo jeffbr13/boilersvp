@@ -5,6 +5,9 @@ class City(models.Model):
     url = models.URLField(unique=True)
     name = models.CharField(max_length=200, unique=True)
 
+    class Meta:
+        ordering = ('name',)
+
     def __str__(self):
         return self.name
 
@@ -15,6 +18,9 @@ class Event(models.Model):
     name = models.CharField(max_length=300)
     city = models.ForeignKey(City, null=True, blank=True)
     start = models.DateTimeField()
+
+    class Meta:
+        ordering = ('-start',)
 
     def __str__(self):
         return self.name
