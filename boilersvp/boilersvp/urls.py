@@ -21,6 +21,6 @@ from subscriptions.views import index, AllEventsCalendarFeed
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', index),
-    url(r'^calendar/all$', AllEventsCalendarFeed()),
+    url(r'^$', index, name='index'),
+    url(r'^calendar/all$', AllEventsCalendarFeed(), name='calendar'),
 ]
