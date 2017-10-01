@@ -72,9 +72,8 @@
         <p>Subscribe in your <a href="https://support.google.com/calendar/answer/37100?co=GENIE.Platform%3DDesktop&hl=en">Google Calendar</a> or <a href="https://support.apple.com/kb/PH11523?locale=en_GB">Apple Calendar</a>:</p>
         <ul>
             <li>
-                <a href="{% url 'calendar' %}">All Events</a>
-                <a href="{% url 'calendar' %}"><img src="{% static 'calendar.svg' %}" alt="webcal"></a>
-
+                <a href="webcal://{% url 'calendar' %}">All Events</a>
+                <a href="webcal://{% url 'calendar' %}"><img src="{% static 'calendar.svg' %}" alt="webcal"></a>
             </li>
         </ul>
     </section>
