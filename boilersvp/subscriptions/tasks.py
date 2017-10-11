@@ -20,7 +20,8 @@ def say_hello():
 
 
 @db_periodic_task(crontab(minute='0'))
-def fetch_all_events():
+def scrape_all_events():
+    logger.info('Scraping all events…')
     next_url = 'https://archive.boilerroom.tv/api/shows/'
     while next_url:
         logger.info('Fetching <%s>…', next_url)
@@ -53,6 +54,7 @@ def fetch_all_events():
                     notify_subscribers(event.id)
             except:
                 logger.exception('Could not create event from %s.', event_json)
+    logger.info('Scraped all events.')
 
 
 @db_task()
