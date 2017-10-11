@@ -39,18 +39,14 @@ def fetch_all_events():
                 else:
                     city = None
 
-                event_web_url = requests.get(
-                    'https://boilerroom.tv/',
-                    {'p': event_json['wordpress_id']},
-                    allow_redirects=False,
-                ).next.url
-
                 event, created = Event.objects.update_or_create(
                     url=event_json['url'],
-                    web_url=event_web_url,
                     name=event_json['title'],
                     city=city,
                     start=parse(event_json['start']),
+                    defaults=dict(
+                        web_url='https://boilerroom.tv/?p=%s' % event_json['wordpress_id'],
+                    )
                 )
                 logger.info('Created %r.' if created else 'Updated %r.', event)
                 if created and event.start > timezone.now():
