@@ -14,16 +14,16 @@ class City(models.Model):
 
 class Event(models.Model):
     url = models.URLField(unique=True)
-    web_url = models.URLField(unique=True)
     name = models.CharField(max_length=300)
     city = models.ForeignKey(City, null=True, blank=True)
     start = models.DateTimeField()
+    end = models.DateTimeField(null=True)
 
     class Meta:
         ordering = ('-start',)
 
     def __str__(self):
-        return self.name
+        return '%s (%s)' % (self.name, self.start.strftime('%c'))
 
 
 class Subscriber(models.Model):
