@@ -56,6 +56,7 @@ def scrape_upcoming_events():
                 defaults=dict(
                     start=parse(event_json['startTime']).astimezone(pytz.UTC),
                     end=parse(event_json['endTime']).astimezone(pytz.UTC),
+                    can_rsvp=True if event_json['inviteList'] else False,
                 ),
             )
             logger.info('Created %r.' if created else 'Updated %r.', event)
@@ -74,7 +75,12 @@ def notify_subscribers(event_id):
     for subscriber in event.city.subscriber_set.all():
         emails.append((
             'Upcoming Boiler Room in %s: %s' % (event.city, event.name),
-            'RSVP to %s at <%s> (%c).' % (event.name, event.url, event.start),
+            'You can %s "%s" at %s here:\n\n<%s>.' % (
+                ('request an invitation to' if event.can_rsvp else 'watch'),
+                event.name,
+                event.start,
+                event.url,
+            ),
             settings.DEFAULT_FROM_EMAIL,
             (subscriber.email,),
         ))

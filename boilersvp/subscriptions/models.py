@@ -18,6 +18,7 @@ class Event(models.Model):
     city = models.ForeignKey(City, null=True, blank=True)
     start = models.DateTimeField()
     end = models.DateTimeField(null=True)
+    can_rsvp = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('-start',)
