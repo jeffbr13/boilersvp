@@ -41,8 +41,11 @@ class AllEventsCalendarFeed(ICalFeed):
     def item_start_datetime(self, item):
         return item.start
 
+    def item_end_datetime(self, item):
+        return item.end
+
     def item_location(self, item):
         return item.city.name if item.city else ''
 
     def item_link(self, item):
-        return item.web_url
+        return item.url
