@@ -75,8 +75,8 @@ def notify_subscribers(event_id):
     for subscriber in event.city.subscriber_set.all():
         emails.append((
             'Upcoming Boiler Room in %s: %s' % (event.city, event.name),
-            'You can %s "%s" (%s) here:\n\n<%s>.' % (
-                ('request an invitation to' if event.can_rsvp else 'watch'),
+            'You can %s "%s" (%s) at <%s>.' % (
+                ('RSVP to' if event.can_rsvp else 'watch'),
                 event.name,
                 event.start.date(),
                 event.url,
